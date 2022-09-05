@@ -1,0 +1,27 @@
+filter:
+  excluded_paths: [doc/*]
+
+checks:
+  php: true
+  javascript: false
+
+tools:
+  php_code_sniffer:
+    config:
+      standard: "PSR2"
+
+build:
+  nodes:
+    analysis:
+      tests:
+        override:
+          - php-scrutinizer-run
+# TODO enable tests (when created)
+#        tests-and-coverage:
+#            tests:
+#                override:
+#                    -   command: 'phpunit --coverage-clover=coverage.clover'
+#                        coverage:
+#                            file: 'coverage.clover'
+#                            format: 'clover'
+

@@ -1,0 +1,19 @@
+# Dependencies
+/vendor/
+
+# PHP development
+/phpdoc/
+/coverage/
+*.cache
+/db.sqlite
+/external/
+
+# Runtime
+/logs/*
+/var/*
+!README.md
+
+# Environment
+.env
+.env.*
+!.env.example

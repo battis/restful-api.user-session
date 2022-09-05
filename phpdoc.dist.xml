@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpdoc>
+    <parser>
+        <default-package-name>Battis\UserSession</default-package-name>
+        <target>var/phpdoc</target>
+    </parser>
+    <transformer>
+        <target>doc/api</target>
+    </transformer>
+    <files>
+        <directory>src</directory>
+    </files>
+    <transformations>
+        <template name="clean"/>
+    </transformations>
+</phpdoc>
