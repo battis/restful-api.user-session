@@ -12,12 +12,12 @@
             "dist": {
                 "type": "path",
                 "url": "..",
-                "reference": "a6b56e1ce099d9fa9dcc18c15c836c1580ca79a3"
+                "reference": "14c077d5838ef02536ccc3b1ef1ea5493d883340"
             },
             "require": {
                 "bryanjhv/slim-session": "^4.0",
                 "php-di/php-di": "^6.0",
-                "slim/http": "^1.0",
+                "slim/http": "^1.2",
                 "slim/php-view": "^3.0",
                 "slim/psr7": "^1.0"
             },

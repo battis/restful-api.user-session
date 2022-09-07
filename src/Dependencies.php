@@ -2,47 +2,51 @@
 
 namespace Battis\UserSession;
 
-use DI\Container;
+use Composer\Autoload\ClassLoader;
+use Psr\Container\ContainerInterface;
 use ReflectionClass;
 use Slim\Views\PhpRenderer;
 
-use function DI\autowire;
-use function DI\get;
-
 class Dependencies
 {
-  const TEMPLATE_PATH = "battis.userSession.dependencies.templatePath";
+    const TEMPLATES = "battis.userSession.templates";
 
-  private static function setDefaults(Container $container)
-  {
-    $reflection = new ReflectionClass(self::class);
-    $projectRoot = dirname($reflection->getFileName(), 2);
+    private static $pathToApp;
 
-    foreach (
-      [
-        self::TEMPLATE_PATH => "$projectRoot/templates",
-      ]
-      as $key => $value
+    public static function definitions(
+        string $pathToTemplates = "{PACKAGE_ROOT}/templates"
     ) {
-      if (false == $container->has($key)) {
-        $container->set($key, $value);
-      }
+        $pathToTemplates = self::expandPath($pathToTemplates);
+        return [
+            PhpRenderer::class => function (ContainerInterface $container) {
+                return new PhpRenderer($container->get(self::TEMPLATES));
+            },
+        ];
     }
-  }
 
-  public static function prepare(Container $container)
-  {
-    self::setDefaults($container);
+    private static function expandPath($path)
+    {
+        if (empty(self::$pathToApp)) {
+            self::$pathToApp = dirname(
+                (new ReflectionClass(ClassLoader::class))->getFileName(),
+                3
+            );
+        }
 
-    // prepare Slim PHP template renderer (for login & authorize endpoints)
-    if (!$container->has(PhpRenderer::class)) {
-      $container->set(
-        PhpRenderer::class,
-        autowire()->constructorParameter(
-          "templatePath",
-          get(self::TEMPLATE_PATH)
-        )
-      );
+        foreach (
+            [
+                "APP_ROOT" => self::$pathToApp,
+                "PACKAGE_ROOT" =>
+                    self::$pathToApp . "/vendor/battis/user-session",
+            ]
+            as $placeholder => $placeholderPath
+        ) {
+            $path = preg_replace(
+                "/\{$placeholder\}/i",
+                $placeholderPath,
+                $path
+            );
+        }
+        return $path;
     }
-  }
 }

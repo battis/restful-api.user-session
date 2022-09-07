@@ -6,7 +6,7 @@ use Battis\UserSession\Entities\UserEntityInterface;
 
 interface UserRepositoryInterface
 {
-  public function getUserEntityByUsername(
-    string $username
-  ): ?UserEntityInterface;
+    public function getUserEntityByUsername(
+        string $username
+    ): ?UserEntityInterface;
 }

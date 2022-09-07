@@ -1,23 +1,26 @@
 {
-  "name": "battis/user-session",
-  "description": "User session management for Slim Framework",
-  "license": "MIT",
-  "autoload": {
-    "psr-4": {
-      "Battis\\UserSession\\": "src/"
+    "name": "battis/user-session",
+    "description": "User session management for Slim Framework",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Battis\\UserSession\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Seth Battis",
+            "email": "seth@battis.net"
+        }
+    ],
+    "require": {
+        "bryanjhv/slim-session": "^4.0",
+        "php-di/php-di": "^6.0",
+        "slim/http": "^1.2",
+        "slim/php-view": "^3.0",
+        "slim/psr7": "^1.0"
+    },
+    "config": {
+        "sort-packages": true
     }
-  },
-  "authors": [
-    {
-      "name": "Seth Battis",
-      "email": "seth@battis.net"
-    }
-  ],
-  "require": {
-    "php-di/php-di": "^6.0",
-    "bryanjhv/slim-session": "^4.0",
-    "slim/php-view": "^3.0",
-    "slim/psr7": "^1.0",
-    "slim/http": "^1.0"
-  }
 }
