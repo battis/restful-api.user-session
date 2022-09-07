@@ -7,6 +7,7 @@
 *.cache
 /db.sqlite
 /external/
+/.nova
 
 # Runtime
 /logs/*
