@@ -15,7 +15,6 @@
     ],
     "require": {
         "bryanjhv/slim-session": "^4.0",
-        "php-di/php-di": "^6.0",
         "slim/http": "^1.2",
         "slim/php-view": "^3.0",
         "slim/psr7": "^1.0"

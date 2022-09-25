@@ -12,11 +12,10 @@
             "dist": {
                 "type": "path",
                 "url": "..",
-                "reference": "14c077d5838ef02536ccc3b1ef1ea5493d883340"
+                "reference": "7a7ff39f9fcc1a4a29d2d567d0a178365923b77c"
             },
             "require": {
                 "bryanjhv/slim-session": "^4.0",
-                "php-di/php-di": "^6.0",
                 "slim/http": "^1.2",
                 "slim/php-view": "^3.0",
                 "slim/psr7": "^1.0"
@@ -157,16 +156,16 @@
         },
         {
             "name": "laravel/serializable-closure",
-            "version": "v1.2.1",
+            "version": "v1.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/serializable-closure.git",
-                "reference": "d78fd36ba031a1a695ea5a406f29996948d7011b"
+                "reference": "47afb7fae28ed29057fdca37e16a84f90cc62fae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/serializable-closure/zipball/d78fd36ba031a1a695ea5a406f29996948d7011b",
-                "reference": "d78fd36ba031a1a695ea5a406f29996948d7011b",
+                "url": "https://api.github.com/repos/laravel/serializable-closure/zipball/47afb7fae28ed29057fdca37e16a84f90cc62fae",
+                "reference": "47afb7fae28ed29057fdca37e16a84f90cc62fae",
                 "shasum": ""
             },
             "require": {
@@ -213,7 +212,7 @@
                 "issues": "https://github.com/laravel/serializable-closure/issues",
                 "source": "https://github.com/laravel/serializable-closure"
             },
-            "time": "2022-08-26T15:25:27+00:00"
+            "time": "2022-09-08T13:45:54+00:00"
         },
         {
             "name": "nikic/fast-route",
