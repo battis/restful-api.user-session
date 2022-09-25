@@ -12,7 +12,7 @@
             "dist": {
                 "type": "path",
                 "url": "..",
-                "reference": "7a7ff39f9fcc1a4a29d2d567d0a178365923b77c"
+                "reference": "daa14e00b6f861864b3145220002e40360b38e3d"
             },
             "require": {
                 "bryanjhv/slim-session": "^4.0",
