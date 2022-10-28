@@ -10,43 +10,42 @@ use Slim\Views\PhpRenderer;
 
 class HandleLogin
 {
-  private $manager;
-  private $userRepository;
-  private $renderer;
-  private $usernameFieldName;
-  private $passwordFieldName;
+    private $manager;
+    private $userRepository;
+    private $renderer;
+    private $usernameFieldName;
+    private $passwordFieldName;
 
-  public function __construct(
-    Manager $manager,
-    UserRepositoryInterface $userRepository,
-    PhpRenderer $renderer,
-    string $usernameFieldName = "username",
-    string $passwordFiledName = "password"
-  ) {
-    $this->manager = $manager;
-    $this->userRepository = $userRepository;
-    $this->renderer = $renderer;
-    $this->usernameFieldName = $usernameFieldName;
-    $this->passwordFieldName = $passwordFiledName;
-  }
-
-  public function __invoke(ServerRequest $request, Response $response)
-  {
-    if (
-      ($user = $this->userRepository->getUserEntityByUsername(
-        $request->getParsedBodyParam($this->usernameFieldName)
-      )) &&
-      $user->passwordVerify(
-        $request->getParsedBodyParam($this->passwordFieldName)
-      )
+    public function __construct(
+        Manager $manager,
+        UserRepositoryInterface $userRepository,
+        PhpRenderer $renderer,
+        string $usernameFieldName = "username",
+        string $passwordFiledName = "password"
     ) {
-      return $this->manager->startUserSession($user);
+        $this->manager = $manager;
+        $this->userRepository = $userRepository;
+        $this->renderer = $renderer;
+        $this->usernameFieldName = $usernameFieldName;
+        $this->passwordFieldName = $passwordFiledName;
     }
 
-    // TODO add timeout
-    return $this->renderer->render($response, "login.php", [
-      "message" => "bad credentials",
-      "message_type" => "error",
-    ]);
-  }
+    public function __invoke(ServerRequest $request, Response $response)
+    {
+        if (
+            ($user = $this->userRepository->getUserEntityByUsername(
+                $request->getParsedBodyParam($this->usernameFieldName)
+            )) &&
+            $user->passwordVerify(
+                $request->getParsedBodyParam($this->passwordFieldName)
+            )
+        ) {
+            return $this->manager->startUserSession($user);
+        }
+
+        return $this->renderer->render($response, "login.php", [
+            "message" => "bad credentials",
+            "message_type" => "error",
+        ]);
+    }
 }

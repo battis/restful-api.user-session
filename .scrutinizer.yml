@@ -1,22 +1,21 @@
 filter:
-  excluded_paths: [doc/*]
+    excluded_paths: [doc/*]
 
 checks:
-  php: true
-  javascript: false
+    php: true
+    javascript: false
 
 tools:
-  php_code_sniffer:
-    config:
-      standard: "PSR2"
+    php_code_sniffer:
+        config:
+            standard: "PSR2"
 
 build:
-  nodes:
-    analysis:
-      tests:
-        override:
-          - php-scrutinizer-run
-# TODO enable tests (when created)
+    nodes:
+        analysis:
+            tests:
+                override:
+                    - php-scrutinizer-run
 #        tests-and-coverage:
 #            tests:
 #                override:
