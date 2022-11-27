@@ -29,7 +29,7 @@ class Manager
 
   public function startUserLogin(RequestInterface $request): ResponseInterface
   {
-    $this->session->set(self::REDIRECT, (string) $request->getUri());
+    $this->session->set(self::REDIRECT, $request->getUri()->getPath());
     $response = new Response();
     return $response->withHeader("Location", $this->loginPath)->withStatus(302); // using status 302 forces the redirect to use the GET method
   }

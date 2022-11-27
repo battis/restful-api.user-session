@@ -29,6 +29,7 @@
     },
     "require-dev": {
         "battis/data-utilities": "^1.1",
+        "php-di/php-di": "^6.4",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^9.0"
     }

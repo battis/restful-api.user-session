@@ -21,16 +21,16 @@ abstract class TestCase extends PHPUnitTestCase
 
     protected function getAppInstance(): App
     {
-    $container = (new ContainerBuilder())
+        $container = (new ContainerBuilder())
             ->addDefinitions(Dependencies::definitions())
-            ->addDefinitions(include __DIR__ . '../example/config/settings.inc.php')
-            ->addDefinitions(include __DIR__ . '../example/config/dependencies.inc.php')
+            ->addDefinitions(include __DIR__ . '/../example/config/settings.inc.php')
+            ->addDefinitions(include __DIR__ . '/../example/config/dependencies.inc.php')
             ->build();
 
         $app = AppFactory::createFromContainer($container);
 
-        include __DIR__ . "../example/config/middleware.inc.php";
-        include __DIR__ . "../example/config/routes.inc.php";
+        include __DIR__ . "/../example/config/middleware.inc.php";
+        include __DIR__ . "/../example/config/routes.inc.php";
 
         return $app;
     }
