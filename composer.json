@@ -4,7 +4,12 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Battis\\UserSession\\": "src/"
+            "Battis\\UserSession\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Battis\\UserSession\\Tests\\": "tests"
         }
     },
     "authors": [
@@ -23,6 +28,8 @@
         "sort-packages": true
     },
     "require-dev": {
+        "battis/data-utilities": "^1.1",
+        "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^9.0"
     }
 }
