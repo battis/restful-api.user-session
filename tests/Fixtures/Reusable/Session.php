@@ -1,6 +1,6 @@
 <?php
 
-namespace Battis\UserSession\Tests\Fixtures\ManagerTest;
+namespace Battis\UserSession\Tests\Fixtures\Reusable;
 
 use SlimSession\Helper;
 

@@ -7,9 +7,11 @@ use Battis\UserSession\Dependencies;
 use DI\ContainerBuilder;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\App;
 use Slim\Factory\AppFactory;
+use Slim\Http\ServerRequest;
 use Slim\Psr7\Factory\StreamFactory;
 use Slim\Psr7\Headers;
 use Slim\Psr7\Request;
@@ -23,14 +25,14 @@ abstract class TestCase extends PHPUnitTestCase
     {
         $container = (new ContainerBuilder())
             ->addDefinitions(Dependencies::definitions())
-            ->addDefinitions(include __DIR__ . '/../example/config/settings.inc.php')
-            ->addDefinitions(include __DIR__ . '/../example/config/dependencies.inc.php')
+            ->addDefinitions(include __DIR__ . '/Fixtures/app/settings.inc.php')
+            ->addDefinitions(include __DIR__ . '/Fixtures/app/dependencies.inc.php')
             ->build();
 
         $app = AppFactory::createFromContainer($container);
 
-        include __DIR__ . "/../example/config/middleware.inc.php";
-        include __DIR__ . "/../example/config/routes.inc.php";
+        include __DIR__ . "/Fixtures/app/middleware.inc.php";
+        include __DIR__ . "/Fixtures/app/routes.inc.php";
 
         return $app;
     }
@@ -50,6 +52,19 @@ abstract class TestCase extends PHPUnitTestCase
         foreach ($headers as $name => $value) {
             $h->addHeader($name, $value);
         }
-        return new Request($method, $uri, $h, $cookies, $serverParams, $stream);
+        return new ServerRequest(new Request($method, $uri, $h, $cookies, $serverParams, $stream));
     }
+
+    protected function assertLocationHeader($expectedLocation, ResponseInterface $response, bool $exact = true)
+    {
+        $headers = $response->getHeaders();
+        if ($exact) {
+            $this->assertContainsEquals('Location', array_keys($headers));
+            $this->assertContainsEquals($expectedLocation, $headers['Location']);
+        } else {
+            $this->assertContains('Location', array_keys($headers));
+            $this->assertContains($expectedLocation, $headers['Location']);
+        }
+    }
+
 }

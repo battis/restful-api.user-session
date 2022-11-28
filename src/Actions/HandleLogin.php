@@ -47,6 +47,8 @@ class HandleLogin
     return $this->renderer->render($response, "login.php", [
       "message" => "bad credentials",
       "message_type" => "error",
+      "usernameFieldName" => $this->usernameFieldName,
+      "passwordFieldName" => $this->passwordFieldName
     ]);
   }
 }

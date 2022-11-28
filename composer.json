@@ -1,36 +1,37 @@
 {
     "name": "battis/user-session",
     "description": "User session management for Slim Framework",
-    "license": "MIT",
-    "autoload": {
-        "psr-4": {
-            "Battis\\UserSession\\": "src"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Battis\\UserSession\\Tests\\": "tests"
-        }
-    },
     "authors": [
         {
             "name": "Seth Battis",
             "email": "seth@battis.net"
         }
     ],
+    "license": "MIT",
     "require": {
         "bryanjhv/slim-session": "^4.0",
         "slim/http": "^1.2",
         "slim/php-view": "^3.0",
         "slim/psr7": "^1.0"
     },
-    "config": {
-        "sort-packages": true
+    "autoload": {
+        "psr-4": {
+            "Battis\\UserSession\\": "src"
+        }
     },
     "require-dev": {
         "battis/data-utilities": "^1.1",
+        "ext-simplexml": "*",
         "php-di/php-di": "^6.4",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^9.0"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Battis\\UserSession\\Tests\\": "tests"
+        }
+    },
+    "config": {
+        "sort-packages": true
     }
 }

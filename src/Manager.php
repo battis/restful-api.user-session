@@ -10,6 +10,11 @@ use SlimSession\Helper as Session;
 
 class Manager
 {
+  public const DEFAULT_LOGIN_PATH = '/auth/login';
+  public const DEFAULT_REDIRECT = '/';
+
+  private const HEADER_LOCATION = 'Location';
+
   private const USER = "battis.userSession.manager.user";
   private const REDIRECT = "battis.userSession.manager.redirect";
 
@@ -19,8 +24,8 @@ class Manager
 
   public function __construct(
     Session $session,
-    string $loginPath = "/auth/login",
-    string $defaultRedirect = "/"
+    string $loginPath = self::DEFAULT_LOGIN_PATH,
+    string $defaultRedirect = self::DEFAULT_REDIRECT
   ) {
     $this->session = $session;
     $this->loginPath = $loginPath;
@@ -31,7 +36,7 @@ class Manager
   {
     $this->session->set(self::REDIRECT, $request->getUri()->getPath());
     $response = new Response();
-    return $response->withHeader("Location", $this->loginPath)->withStatus(302); // using status 302 forces the redirect to use the GET method
+    return $response->withHeader(self::HEADER_LOCATION, $this->loginPath)->withStatus(302); // using status 302 forces the redirect to use the GET method
   }
 
   public function startUserSession(
@@ -43,7 +48,7 @@ class Manager
     $redirect = $this->session->get(self::REDIRECT, $this->defaultRedirect);
     $this->session->delete(self::REDIRECT);
     $response = new Response();
-    return $response->withHeader("Location", $redirect)->withStatus(302);
+    return $response->withHeader(self::HEADER_LOCATION, $redirect)->withStatus(302);
   }
 
   public function sessionIsActive(): bool
@@ -58,6 +63,6 @@ class Manager
 
   public function endUserSession(): void
   {
-    $this->session->destroy();
+    $this->session->clear();
   }
 }

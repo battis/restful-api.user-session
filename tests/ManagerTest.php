@@ -2,11 +2,9 @@
 
 namespace Battis\UserSession\Tests;
 
-use Battis\UserSession\Entities\UserEntityInterface;
 use Battis\UserSession\Manager;
-use Battis\UserSession\Tests\Fixtures\ManagerTest\Session;
-use Battis\UserSession\Tests\Fixtures\ManagerTest\User;
-use Psr\Http\Message\ResponseInterface;
+use Battis\UserSession\Tests\Fixtures\Reusable\Session;
+use Battis\UserSession\Tests\Fixtures\Reusable\User;
 use ReflectionClass;
 
 class ManagerTest extends TestCase
@@ -28,19 +26,9 @@ class ManagerTest extends TestCase
         $_SESSION = [];
     }
 
-    private function getUser(): UserEntityInterface
-    {
-        return new User(random_int(1,1000), md5(time()));
-    }
-
     private function getManager(...$args): Manager
     {
         return new Manager(new Session(), ...$args);
-    }
-
-    private function assertLocationHeader($expectedLocation, ResponseInterface $response)
-    {
-        $this->assertEquals(['Location' => [$expectedLocation]], $response->getHeaders());
     }
 
     public function testConstructorDefault()
@@ -66,7 +54,7 @@ class ManagerTest extends TestCase
     {
         $redirect = 'custom-default-redirect';
         $manager = $this->getManager('', $redirect);
-        $response = $manager->startUserSession($this->getUser());
+        $response = $manager->startUserSession(new User());
         $this->assertLocationHeader($redirect, $response);
     }
 
@@ -77,7 +65,7 @@ class ManagerTest extends TestCase
         $manager = $this->getManager();
         $request = $this->createRequest('GET', $path);
         $response = $manager->startUserLogin($request);
-        $this->assertLocationHeader('/auth/login', $response);
+        $this->assertLocationHeader(Manager::DEFAULT_LOGIN_PATH, $response);
         $this->assertEquals(302, $response->getStatusCode());
         $this->assertFalse(isset($_SESSION[self::$USER]));
         $this->assertEquals($path, $_SESSION[self::$REDIRECT]);
@@ -85,11 +73,11 @@ class ManagerTest extends TestCase
 
     public function testStartUserSession()
     {
-        $user = $this->getUser();
+        $user = new User();
         $manager = $this->getManager();
 
         $response = $manager->startUserSession($user);
-        $this->assertLocationHeader('/', $response);
+        $this->assertLocationHeader(Manager::DEFAULT_REDIRECT, $response);
         $this->assertTrue($manager->sessionIsActive());
         $this->assertEquals($user, $manager->getCurrentUser());
     }
@@ -97,7 +85,7 @@ class ManagerTest extends TestCase
     public function testEndUserSession()
     {
         global $_SESSION;
-        $user = $this->getUser();
+        $user = new User();
         $manager = $this->getManager();
 
         $manager->startUserSession($user);

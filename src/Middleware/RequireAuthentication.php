@@ -11,9 +11,10 @@ class RequireAuthentication extends Session
 {
   private $manager;
 
-  public function __construct($settings = [], Manager $manager)
+  public function __construct($settings = [], Manager $manager = null)
   {
     parent::__construct($settings);
+    assert($manager !== null);
     $this->manager = $manager;
   }
 
