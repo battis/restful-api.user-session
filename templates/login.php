@@ -14,14 +14,14 @@ EOT;
             <div class="field username">
                 <label>Username</label>
                 <input
-                    name="<?= $usernameFieldName ?>"
+                    name="username"
                     type="text"
                 />
             </div>
             <div class="field password">
                 <label>Password</label>
                 <input
-                    name="<? $passwordFieldName ?>"
+                    name="password"
                     type="password"
                 />
             </div>

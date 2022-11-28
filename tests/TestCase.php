@@ -4,6 +4,7 @@ namespace Battis\UserSession\Tests;
 
 use Battis\DataUtilities\PHPUnit\FixturePath;
 use Battis\UserSession\Dependencies;
+use Battis\UserSession\Tests\Fixtures\Reusable\Session;
 use DI\ContainerBuilder;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -16,10 +17,16 @@ use Slim\Psr7\Factory\StreamFactory;
 use Slim\Psr7\Headers;
 use Slim\Psr7\Request;
 use Slim\Psr7\Uri;
+use SlimSession\Helper;
 
 abstract class TestCase extends PHPUnitTestCase
 {
     use ProphecyTrait, FixturePath;
+
+    protected function setUp(): void
+    {
+        Session::destroy();
+    }
 
     protected function getAppInstance(): App
     {
@@ -27,6 +34,7 @@ abstract class TestCase extends PHPUnitTestCase
             ->addDefinitions(Dependencies::definitions())
             ->addDefinitions(include __DIR__ . '/Fixtures/app/settings.inc.php')
             ->addDefinitions(include __DIR__ . '/Fixtures/app/dependencies.inc.php')
+            ->addDefinitions([Helper::class => fn() => new Session()])
             ->build();
 
         $app = AppFactory::createFromContainer($container);
@@ -41,13 +49,21 @@ abstract class TestCase extends PHPUnitTestCase
         string $method,
         string $path,
         array $headers = ['HTTP_ACCEPT' => 'application/json'],
+        ?array $body = null,
         array $cookies = [],
         array $serverParams = []
     ): ServerRequestInterface
     {
         $uri = new Uri('', '', 80, $path);
-        $handle = fopen('php://temp', 'w+');
-        $stream = (new StreamFactory())->createStreamFromResource($handle);
+
+        $streamFactory = new StreamFactory();
+        if ($body !== null) {
+            $stream = $streamFactory->createStream(http_build_query($body));
+            $headers['Content-Type'] = 'application/x-www-form-urlencoded';
+        } else {
+            $handle = fopen('php://temp', 'w+');
+            $stream = $streamFactory->createStreamFromResource($handle);
+        }
         $h = new Headers();
         foreach ($headers as $name => $value) {
             $h->addHeader($name, $value);

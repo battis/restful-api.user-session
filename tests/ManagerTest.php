@@ -20,12 +20,6 @@ class ManagerTest extends TestCase
         self::$REDIRECT = $reflection->getConstant('REDIRECT');
     }
 
-    protected function setUp(): void
-    {
-        global $_SESSION;
-        $_SESSION = [];
-    }
-
     private function getManager(...$args): Manager
     {
         return new Manager(new Session(), ...$args);

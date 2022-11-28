@@ -14,14 +14,13 @@ class ShowLoginViewTest extends TestCase
         $app = $this->getAppInstance();
         $response = $app->handle($this->createRequest('GET', Manager::DEFAULT_LOGIN_PATH));
         $payload = (string) $response->getBody();
-        $xml = new SimpleXMLElement($payload);
         $this->assertNotEmpty($payload);
+        $xml = new SimpleXMLElement($payload);
         $this->assertCount(0, $xml->{'non-document-error'});
         $this->assertCount(0, $xml->error);
-        $this->assertStringContainsString('<form class="form login" method="post" action="/auth/login">', $payload);
     }
 
-    public function testLoginViewWithActiveuser()
+    public function testLoginViewWithActiveUser()
     {
         $app = $this->getAppInstance();
 
