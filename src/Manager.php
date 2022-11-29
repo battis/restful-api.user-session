@@ -34,9 +34,13 @@ class Manager
 
   public function startUserLogin(RequestInterface $request): ResponseInterface
   {
-    $this->session->set(self::REDIRECT, $request->getUri()->getPath());
-    $response = new Response();
-    return $response->withHeader(self::HEADER_LOCATION, $this->loginPath)->withStatus(302); // using status 302 forces the redirect to use the GET method
+      $response = new Response();
+      if ($this->sessionIsActive()) {
+          return $response->withHeader(self::HEADER_LOCATION, $this->defaultRedirect)->withStatus(302);
+      } else {
+        $this->session->set(self::REDIRECT, $request->getUri()->getPath());
+        return $response->withHeader(self::HEADER_LOCATION, $this->loginPath)->withStatus(302); // using status 302 forces the redirect to use the GET method
+    }
   }
 
   public function startUserSession(

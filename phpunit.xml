@@ -10,10 +10,7 @@
       <directory>tests</directory>
     </testsuite>
   </testsuites>
-  <php>
-      <ini name="session.use_cookies" value="0" />
-      <ini name="session.use_only_cookies" value="0" />
-      <ini name="session.use_trans_sid" value="0" />
-      <ini name="session.cache_limiter" value="" />
-  </php>
+  <extensions>
+    <extension class="Battis\PHPUnit\Sessions\Extension" />
+  </extensions>
 </phpunit>

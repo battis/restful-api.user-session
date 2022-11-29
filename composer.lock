@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d6adbc32db53c892ef6da76c983e3fc2",
+    "content-hash": "81f52537e0e68f29f3039d6e1c6c5c0e",
     "packages": [
         {
             "name": "bryanjhv/slim-session",
@@ -1030,6 +1030,46 @@
                 "source": "https://github.com/battis/hydratable/tree/v0.1"
             },
             "time": "2022-11-24T17:49:34+00:00"
+        },
+        {
+            "name": "battis/phpunit-sessions",
+            "version": "v0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/battis/phpunit-sessions.git",
+                "reference": "e3e98387bbc2f0d53cca4f874911e3ac77993f1c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/battis/phpunit-sessions/zipball/e3e98387bbc2f0d53cca4f874911e3ac77993f1c",
+                "reference": "e3e98387bbc2f0d53cca4f874911e3ac77993f1c",
+                "shasum": ""
+            },
+            "require": {
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Battis\\PHPUnit\\Sessions\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Seth Battis",
+                    "email": "seth@battis.net"
+                }
+            ],
+            "description": "Extension to PHPUnit to handle PHP sessions more gracefully",
+            "support": {
+                "issues": "https://github.com/battis/phpunit-sessions/issues",
+                "source": "https://github.com/battis/phpunit-sessions/tree/v0.1"
+            },
+            "time": "2022-11-28T19:09:19+00:00"
         },
         {
             "name": "doctrine/instantiator",
@@ -3343,6 +3383,8 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
-    "platform-dev": [],
+    "platform-dev": {
+        "ext-simplexml": "*"
+    },
     "plugin-api-version": "2.3.0"
 }

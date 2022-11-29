@@ -3,7 +3,6 @@
 namespace Battis\UserSession\Tests;
 
 use Battis\UserSession\Manager;
-use Battis\UserSession\Tests\Fixtures\Reusable\Session;
 use Battis\UserSession\Tests\Fixtures\Reusable\User;
 use ReflectionClass;
 
@@ -22,18 +21,18 @@ class ManagerTest extends TestCase
 
     private function getManager(...$args): Manager
     {
-        return new Manager(new Session(), ...$args);
+        return new Manager($this->getSession(), ...$args);
     }
 
     public function testConstructorDefault()
     {
-        global $_SESSION;
+        $session = $this->getSession();
         $manager = $this->getManager();
         $this->assertFalse($manager->sessionIsActive());
         $this->assertNull($manager->getCurrentUser());
 
-        $this->assertFalse(isset($_SESSION[self::$USER]));
-        $this->assertFalse(isset($_SESSION[self::$REDIRECT]));
+        $this->assertFalse($session->__isset(self::$USER));
+        $this->assertFalse($session->__isset(self::$REDIRECT));
     }
 
     public function testConstructorCustomLoginPath()
@@ -50,19 +49,39 @@ class ManagerTest extends TestCase
         $manager = $this->getManager('', $redirect);
         $response = $manager->startUserSession(new User());
         $this->assertLocationHeader($redirect, $response);
+
+        $response = $manager->startUserLogin($this->createRequest('GET', $manager::DEFAULT_LOGIN_PATH));
+        $this->assertLocationHeader($redirect, $response);
     }
 
     public function testStartUserLogin()
     {
-        global $_SESSION;
         $path = 'requested-path';
+        $session = $this->getSession();
         $manager = $this->getManager();
         $request = $this->createRequest('GET', $path);
         $response = $manager->startUserLogin($request);
         $this->assertLocationHeader(Manager::DEFAULT_LOGIN_PATH, $response);
         $this->assertEquals(302, $response->getStatusCode());
-        $this->assertFalse(isset($_SESSION[self::$USER]));
-        $this->assertEquals($path, $_SESSION[self::$REDIRECT]);
+        $this->assertFalse($session->__isset(self::$USER));
+        $this->assertEquals($path, $session->get(self::$REDIRECT));
+    }
+
+    public function testStartUserLoginWithLoggedInUser()
+    {
+        $session = $this->getSession();
+        $manager = $this->getManager();
+        $user = new User();
+        $request = $this->createRequest('GET', $manager::DEFAULT_LOGIN_PATH);
+        $session->set(self::$USER, $user);
+        $this->assertTrue($manager->sessionIsActive());
+        $this->assertEquals($user, $manager->getCurrentUser());
+
+        $response = $manager->startUserLogin($request);
+        $this->assertTrue($manager->sessionIsActive());
+        $this->assertEquals($user, $manager->getCurrentUser());
+        $this->assertEquals(302, $response->getStatusCode());
+        $this->assertLocationHeader($manager::DEFAULT_REDIRECT, $response);
     }
 
     public function testStartUserSession()
@@ -78,16 +97,16 @@ class ManagerTest extends TestCase
 
     public function testEndUserSession()
     {
-        global $_SESSION;
-        $user = new User();
+        $session = $this->getSession();
         $manager = $this->getManager();
+        $user = new User();
 
         $manager->startUserSession($user);
         $this->assertTrue($manager->sessionIsActive());
         $this->assertEquals($user, $manager->getCurrentUser());
 
         $manager->endUserSession();
-        $this->assertEmpty($_SESSION);
+        $this->assertEquals(0, $session->count());
         $this->assertFalse($manager->sessionIsActive());
         $this->assertNull($manager->getCurrentUser());
     }

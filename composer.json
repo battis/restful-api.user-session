@@ -21,6 +21,7 @@
     },
     "require-dev": {
         "battis/data-utilities": "^1.1",
+        "battis/phpunit-sessions": "^0.1",
         "ext-simplexml": "*",
         "php-di/php-di": "^6.4",
         "phpspec/prophecy-phpunit": "^2.0",

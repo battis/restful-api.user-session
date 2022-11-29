@@ -12,10 +12,10 @@ class HandleLoginTest extends TestCase
 {
     public function testHandleLogin()
     {
-        global $_SESSION;
         $REDIRECT = 'battis.userSession.manager.redirect';
 
         $app = $this->getAppInstance();
+        $session = $this->getSession();
         $user = new User();
         $initialPath = '/foo/bar/baz';
 
@@ -25,7 +25,7 @@ class HandleLoginTest extends TestCase
 
         /** @var Manager $manager */
         $manager = $app->getContainer()->get(Manager::class);
-        $manager->startUserLogin($this->createRequest('GET', $initialPath));
+        $session->set($REDIRECT, $initialPath);
 
         $request = $this->createRequest(
             'POST',
@@ -36,9 +36,9 @@ class HandleLoginTest extends TestCase
                 'password' => $user->password
             ]
         );
-        $this->assertEquals($initialPath, $_SESSION[$REDIRECT]);
+        $this->assertEquals($initialPath, $session->get($REDIRECT));
         $response = $app->handle($request);
-        $this->assertFalse(isset($_SESSION[$REDIRECT]));
+        $this->assertFalse($session->__isset($REDIRECT));
         $this->assertTrue($manager->sessionIsActive());
         $this->assertEquals($user, $manager->getCurrentUser());
         $this->assertLocationHeader($initialPath, $response);

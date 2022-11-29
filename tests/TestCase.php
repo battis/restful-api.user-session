@@ -7,7 +7,6 @@ use Battis\UserSession\Dependencies;
 use Battis\UserSession\Tests\Fixtures\Reusable\Session;
 use DI\ContainerBuilder;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\App;
@@ -21,11 +20,21 @@ use SlimSession\Helper;
 
 abstract class TestCase extends PHPUnitTestCase
 {
-    use ProphecyTrait, FixturePath;
+    use FixturePath;
+
+    private $session;
 
     protected function setUp(): void
     {
         Session::destroy();
+    }
+
+    protected function getSession(): Session
+    {
+        if ($this->session === null) {
+            $this->session = new Session();
+        }
+        return $this->session;
     }
 
     protected function getAppInstance(): App
@@ -34,7 +43,7 @@ abstract class TestCase extends PHPUnitTestCase
             ->addDefinitions(Dependencies::definitions())
             ->addDefinitions(include __DIR__ . '/Fixtures/app/settings.inc.php')
             ->addDefinitions(include __DIR__ . '/Fixtures/app/dependencies.inc.php')
-            ->addDefinitions([Helper::class => fn() => new Session()])
+            ->addDefinitions([Helper::class => call_user_func([$this, 'getSession' ])])
             ->build();
 
         $app = AppFactory::createFromContainer($container);
@@ -71,16 +80,12 @@ abstract class TestCase extends PHPUnitTestCase
         return new ServerRequest(new Request($method, $uri, $h, $cookies, $serverParams, $stream));
     }
 
-    protected function assertLocationHeader($expectedLocation, ResponseInterface $response, bool $exact = true)
+    protected function assertLocationHeader($expectedLocation, ResponseInterface $response, string $message = '')
     {
         $headers = $response->getHeaders();
-        if ($exact) {
-            $this->assertContainsEquals('Location', array_keys($headers));
-            $this->assertContainsEquals($expectedLocation, $headers['Location']);
-        } else {
-            $this->assertContains('Location', array_keys($headers));
-            $this->assertContains($expectedLocation, $headers['Location']);
-        }
+        static::assertThat(array_key_exists('Location', $headers), static::isTrue(), $message ?: 'Location header not present');
+        static::assertThat(count($headers['Location']) === 1, static::isTrue(), $message ?: 'Multiple Location headers found ' . json_encode($headers['Location']));
+        static::assertThat($headers['Location'][0] === $expectedLocation, static::isTrue(), $message ?: "Location header '{$headers['Location'][0]}' is not expected '$expectedLocation'");
     }
 
 }

@@ -1,5 +1,7 @@
 <?php
 
+use Battis\PHPUnit\Sessions\Bootstrap;
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
-ob_start(); // hold output until TestZZZ
+Bootstrap::execute();
