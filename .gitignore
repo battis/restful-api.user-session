@@ -7,7 +7,9 @@
 *.cache
 /db.sqlite
 /external/
-/.nova
+/.nova/*
+!/.nova/Artwork
+!/.nova/Configuration.json
 
 # Runtime
 /logs/*
