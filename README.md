@@ -1,5 +1,8 @@
 # Battis\UserSession
 
+[![Latest Version](https://img.shields.io/packagist/v/battis/user-session.svg)](https://packagist.org/packages/battis/user-session)
+[![codecov](https://codecov.io/gh/battis/user-session/branch/main/graph/badge.svg)](https://codecov.io/gh/battis/user-session)
+
 User session management for Slim Framework
 
 ## Installation
