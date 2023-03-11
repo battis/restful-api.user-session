@@ -91,23 +91,36 @@ abstract class TestCase extends PHPUnitTestCase
         string $message = ""
     ) {
         $headers = $response->getHeaders();
+
         static::assertThat(
-            array_key_exists("Location", $headers),
-            static::isTrue(),
-            $message ?: "Location header not present"
+            $headers,
+            static::callback(function ($headers) {
+                if (key_exists("Location", $headers)) {
+                    return true;
+                } else {
+                    static::fail("Location header not present");
+                }
+            }),
+            $message
         );
         static::assertThat(
-            count($headers["Location"]) === 1,
-            static::isTrue(),
-            $message ?:
-            "Multiple Location headers found " .
-                json_encode($headers["Location"])
+            $headers,
+            static::callback(function ($headers) {
+                if (count($headers["Location"])) {
+                    return true;
+                } else {
+                    static::fail(
+                        "Multiple Location headers found " .
+                            json_encode($headers["Location"])
+                    );
+                }
+            }),
+            $message
         );
-        static::assertThat(
-            $headers["Location"][0] === $expectedLocation,
-            static::isTrue(),
-            $message ?:
-            "Location header value '{$headers["Location"][0]}' is not expected value '$expectedLocation'"
+        static::assertEquals(
+            $expectedLocation,
+            $headers["Location"][0],
+            $message ?: "Unexpected Location header"
         );
     }
 }
