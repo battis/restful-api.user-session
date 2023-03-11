@@ -10,20 +10,20 @@ use Slim\Psr7\Response;
 
 class HandleLogout
 {
-  private $manager;
+    private $manager;
 
-  public function __construct(Manager $manager)
-  {
-    $this->manager = $manager;
-  }
-  public function __invoke(
-    ServerRequestInterface $request,
-    ResponseInterface $response
-  ) {
-    $this->manager->endUserSession();
-    $response = new Response();
-    return $response
-      ->withHeader("Location", "/")
-      ->withStatus(StatusCode::STATUS_TEMPORARY_REDIRECT);
-  }
+    public function __construct(Manager $manager)
+    {
+        $this->manager = $manager;
+    }
+    public function __invoke(
+        ServerRequestInterface $request,
+        ResponseInterface $response
+    ) {
+        $this->manager->endUserSession();
+        $response = new Response();
+        return $response
+            ->withHeader("Location", "/")
+            ->withStatus(StatusCode::STATUS_TEMPORARY_REDIRECT);
+    }
 }

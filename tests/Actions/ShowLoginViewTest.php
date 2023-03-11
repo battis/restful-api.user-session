@@ -14,7 +14,9 @@ class ShowLoginViewTest extends TestCase
     public function testLoginView()
     {
         $app = $this->getAppInstance();
-        $response = $app->handle($this->createRequest('GET', Manager::DEFAULT_LOGIN_PATH));
+        $response = $app->handle(
+            $this->createRequest("GET", Manager::DEFAULT_LOGIN_PATH)
+        );
         $payload = (string) $response->getBody();
         $this->assertNotEmpty($payload);
         $xml = new SimpleXMLElement($payload);
@@ -35,8 +37,9 @@ class ShowLoginViewTest extends TestCase
         $manager = $app->getContainer()->get(Manager::class);
         $manager->startUserSession(new User());
 
-        $response = $app->handle($this->createRequest('GET', Manager::DEFAULT_LOGIN_PATH));
+        $response = $app->handle(
+            $this->createRequest("GET", Manager::DEFAULT_LOGIN_PATH)
+        );
         $this->assertLocationHeader(Manager::DEFAULT_REDIRECT, $response);
-
     }
 }

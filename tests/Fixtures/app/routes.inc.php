@@ -11,10 +11,10 @@ use Slim\App;
 // assign the UserSession endpoint(s) to the UserSession\Controller
 $app->group(UserSession\Controller::ENDPOINT, UserSession\Controller::class);
 
-$app
-  ->get("/home", PageRenderer::class)
-  ->add(UserSession\Middleware\Session::class);
+$app->get("/home", PageRenderer::class)->add(
+    UserSession\Middleware\Session::class
+);
 $app->redirect("/", "/home");
-$app
-  ->get("/protected", PageRenderer::class)
-  ->add(UserSession\Middleware\RequireAuthentication::class);
+$app->get("/protected", PageRenderer::class)->add(
+    UserSession\Middleware\RequireAuthentication::class
+);

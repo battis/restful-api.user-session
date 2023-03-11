@@ -12,12 +12,12 @@ class HandleLoginTest extends TestCase
 {
     public function testHandleLogin()
     {
-        $REDIRECT = 'battis.userSession.manager.redirect';
+        $REDIRECT = "battis.userSession.manager.redirect";
 
         $app = $this->getAppInstance();
         $session = $this->getSession();
         $user = new User();
-        $initialPath = '/foo/bar/baz';
+        $initialPath = "/foo/bar/baz";
 
         /** @var UserRepository $userRepo */
         $userRepo = $app->getContainer()->get(UserRepositoryInterface::class);
@@ -28,12 +28,12 @@ class HandleLoginTest extends TestCase
         $session->set($REDIRECT, $initialPath);
 
         $request = $this->createRequest(
-            'POST',
+            "POST",
             Manager::DEFAULT_LOGIN_PATH,
             [],
             [
-                'username' => $user->username,
-                'password' => $user->password
+                "username" => $user->username,
+                "password" => $user->password,
             ]
         );
         $this->assertEquals($initialPath, $session->get($REDIRECT));

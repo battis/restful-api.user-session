@@ -14,8 +14,9 @@ class UserRepository implements UserRepositoryInterface
         $this->users[$user->username] = $user;
     }
 
-    public function getUserEntityByUsername(string $username): ?UserEntityInterface
-    {
+    public function getUserEntityByUsername(
+        string $username
+    ): ?UserEntityInterface {
         return $this->users[$username] ?? null;
     }
 }

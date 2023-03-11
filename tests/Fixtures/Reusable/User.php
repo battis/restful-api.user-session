@@ -14,8 +14,8 @@ class User implements UserEntityInterface
     public function __construct($id = null, string $password = null)
     {
         $this->id = $id ?? random_int(1, 1000);
-        $this->username = md5(time() . 'username');
-        $this->password = $password ?? md5(time() . 'password');
+        $this->username = md5(time() . "username");
+        $this->password = $password ?? md5(time() . "password");
         $this->hash = password_hash($this->password, PASSWORD_DEFAULT);
     }
 

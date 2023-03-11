@@ -5,8 +5,8 @@
     </head>
     <body>
         <?php if (!empty($message)) {
-          $class = $message_type ?: "";
-          echo <<<EOT
+            $class = $message_type ?: "";
+            echo <<<EOT
         <div class="message $class">$message</div>
 EOT;
         } ?>

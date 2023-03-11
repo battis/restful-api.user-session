@@ -41,9 +41,13 @@ abstract class TestCase extends PHPUnitTestCase
     {
         $container = (new ContainerBuilder())
             ->addDefinitions(Dependencies::definitions())
-            ->addDefinitions(include __DIR__ . '/Fixtures/app/settings.inc.php')
-            ->addDefinitions(include __DIR__ . '/Fixtures/app/dependencies.inc.php')
-            ->addDefinitions([Helper::class => call_user_func([$this, 'getSession' ])])
+            ->addDefinitions(include __DIR__ . "/Fixtures/app/settings.inc.php")
+            ->addDefinitions(
+                include __DIR__ . "/Fixtures/app/dependencies.inc.php"
+            )
+            ->addDefinitions([
+                Helper::class => call_user_func([$this, "getSession"]),
+            ])
             ->build();
 
         $app = AppFactory::createFromContainer($container);
@@ -57,35 +61,53 @@ abstract class TestCase extends PHPUnitTestCase
     protected function createRequest(
         string $method,
         string $path,
-        array $headers = ['HTTP_ACCEPT' => 'application/json'],
+        array $headers = ["HTTP_ACCEPT" => "application/json"],
         ?array $body = null,
         array $cookies = [],
         array $serverParams = []
-    ): ServerRequestInterface
-    {
-        $uri = new Uri('', '', 80, $path);
+    ): ServerRequestInterface {
+        $uri = new Uri("", "", 80, $path);
 
         $streamFactory = new StreamFactory();
         if ($body !== null) {
             $stream = $streamFactory->createStream(http_build_query($body));
-            $headers['Content-Type'] = 'application/x-www-form-urlencoded';
+            $headers["Content-Type"] = "application/x-www-form-urlencoded";
         } else {
-            $handle = fopen('php://temp', 'w+');
+            $handle = fopen("php://temp", "w+");
             $stream = $streamFactory->createStreamFromResource($handle);
         }
         $h = new Headers();
         foreach ($headers as $name => $value) {
             $h->addHeader($name, $value);
         }
-        return new ServerRequest(new Request($method, $uri, $h, $cookies, $serverParams, $stream));
+        return new ServerRequest(
+            new Request($method, $uri, $h, $cookies, $serverParams, $stream)
+        );
     }
 
-    protected function assertLocationHeader($expectedLocation, ResponseInterface $response, string $message = '')
-    {
+    protected function assertLocationHeader(
+        $expectedLocation,
+        ResponseInterface $response,
+        string $message = ""
+    ) {
         $headers = $response->getHeaders();
-        static::assertThat(array_key_exists('Location', $headers), static::isTrue(), $message ?: 'Location header not present');
-        static::assertThat(count($headers['Location']) === 1, static::isTrue(), $message ?: 'Multiple Location headers found ' . json_encode($headers['Location']));
-        static::assertThat($headers['Location'][0] === $expectedLocation, static::isTrue(), $message ?: "Location header '{$headers['Location'][0]}' is not expected '$expectedLocation'");
+        static::assertThat(
+            array_key_exists("Location", $headers),
+            static::isTrue(),
+            $message ?: "Location header not present"
+        );
+        static::assertThat(
+            count($headers["Location"]) === 1,
+            static::isTrue(),
+            $message ?:
+            "Multiple Location headers found " .
+                json_encode($headers["Location"])
+        );
+        static::assertThat(
+            $headers["Location"][0] === $expectedLocation,
+            static::isTrue(),
+            $message ?:
+            "Location header value '{$headers["Location"][0]}' is not expected value '$expectedLocation'"
+        );
     }
-
 }

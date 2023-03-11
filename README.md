@@ -22,7 +22,7 @@ Use `UserSession\Dependencies` to prepare container with dependency definitions 
 ```php
 /** @var DI\ContainerBuilder $containerBuilder */
 $containerBuilder->addDefinitions(
-    Battis\UserSession\Dependencies::definitions()
+  Battis\UserSession\Dependencies::definitions()
 );
 ```
 
@@ -35,15 +35,15 @@ namespace Example;
 
 class UserEntity implements Battis\UserSession\Entities\UserEntityInterface
 {
-    public function getIdentifier(): string
-    {
-        // ...
-    }
+  public function getIdentifier(): string
+  {
+    // ...
+  }
 
-    public function passwordVerify(string $password): bool
-    {
-        // ...
-    }
+  public function passwordVerify(string $password): bool
+  {
+    // ...
+  }
 }
 ```
 
@@ -65,7 +65,7 @@ Define these implementations (or, at least, your `UserRepositoryInterface` imple
 ```php
 /** @var DI\ContainerBuilder $containerBuilder */
 $containerBuilder->addDefinitions([
-    Battis\UserSession\Repositories\UserRepositoryInterface::class => fn() => new Example\UserRepository(),
+  Battis\UserSession\Repositories\UserRepositoryInterface::class => fn() => new Example\UserRepository(),
 ]);
 ```
 
@@ -76,8 +76,8 @@ Use `UserSession\Controller` to define authentication endpoints (`/auth/login` a
 ```php
 /** @var Slim\App $app */
 $app->group(
-    Battis\UserSession\Controller::ENDPOINT,
-    Battis\UserSession\Controller::class
+  Battis\UserSession\Controller::ENDPOINT,
+  Battis\UserSession\Controller::class
 );
 ```
 
@@ -87,16 +87,16 @@ Add a user session that provides access to the currently logged-in user to an en
 
 ```php
 /** @var Slim\App $app */
-$app->get("/home", Example\PageRenderer::class)->add(
-    Battis\UserSession\Middleware\Session::class
-);
+$app
+  ->get("/home", Example\PageRenderer::class)
+  ->add(Battis\UserSession\Middleware\Session::class);
 ```
 
 Restrict access to an endpoint (or group) to authenticated users by adding the `UserSession\Middleware\RequireAuthentication` middleware:
 
 ```php
 /** @var Slim\App $app */
-$app->get("/protected", Example\PageRenderer::class)->add(
-    Battis\UserSession\Middleware\RequireAuthentication::class
-);
+$app
+  ->get("/protected", Example\PageRenderer::class)
+  ->add(Battis\UserSession\Middleware\RequireAuthentication::class);
 ```

@@ -9,7 +9,7 @@ class Session extends Helper
     public function __construct()
     {
         global $_SESSION;
-        if (php_sapi_name() === 'cli' && !isset($_SESSION)) {
+        if (php_sapi_name() === "cli" && !isset($_SESSION)) {
             $_SESSION = [];
         }
     }
@@ -17,7 +17,7 @@ class Session extends Helper
     public static function destroy()
     {
         global $_SESSION;
-        if (php_sapi_name() === 'cli') {
+        if (php_sapi_name() === "cli") {
             $_SESSION = [];
         }
         parent::destroy();

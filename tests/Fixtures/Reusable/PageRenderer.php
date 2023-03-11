@@ -14,26 +14,26 @@ use Slim\Views\PhpRenderer;
  */
 class PageRenderer
 {
-  private $renderer;
-  private $manager;
+    private $renderer;
+    private $manager;
 
-  public function __construct(PhpRenderer $renderer, Manager $manager)
-  {
-    $this->renderer = $renderer;
-    $this->manager = $manager;
-  }
+    public function __construct(PhpRenderer $renderer, Manager $manager)
+    {
+        $this->renderer = $renderer;
+        $this->manager = $manager;
+    }
 
-  public function __invoke(
-    ServerRequestInterface $request,
-    ResponseInterface $response,
-    array $args = []
-  ) {
-    return $this->renderer->render(
-      $response,
-      basename($request->getUri()->getPath()) . ".php",
-      array_merge($args, $request->getQueryParams(), [
-        "user" => $this->manager->getCurrentUser(),
-      ])
-    );
-  }
+    public function __invoke(
+        ServerRequestInterface $request,
+        ResponseInterface $response,
+        array $args = []
+    ) {
+        return $this->renderer->render(
+            $response,
+            basename($request->getUri()->getPath()) . ".php",
+            array_merge($args, $request->getQueryParams(), [
+                "user" => $this->manager->getCurrentUser(),
+            ])
+        );
+    }
 }

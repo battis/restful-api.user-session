@@ -9,22 +9,22 @@ use Slim\Views\PhpRenderer;
 
 class ShowLoginView
 {
-  private $renderer;
-  private $manager;
+    private $renderer;
+    private $manager;
 
-  public function __construct(PhpRenderer $renderer, Manager $manager)
-  {
-    $this->renderer = $renderer;
-    $this->manager = $manager;
-  }
-
-  public function __invoke(
-    RequestInterface $request,
-    ResponseInterface $response
-  ) {
-    if ($this->manager->sessionIsActive()) {
-      return $this->manager->startUserSession();
+    public function __construct(PhpRenderer $renderer, Manager $manager)
+    {
+        $this->renderer = $renderer;
+        $this->manager = $manager;
     }
-    return $this->renderer->render($response, "login.php");
-  }
+
+    public function __invoke(
+        RequestInterface $request,
+        ResponseInterface $response
+    ) {
+        if ($this->manager->sessionIsActive()) {
+            return $this->manager->startUserSession();
+        }
+        return $this->renderer->render($response, "login.php");
+    }
 }

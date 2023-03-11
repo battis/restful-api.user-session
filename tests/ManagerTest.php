@@ -15,8 +15,8 @@ class ManagerTest extends TestCase
     {
         TestCase::setUpBeforeClass();
         $reflection = new ReflectionClass(Manager::class);
-        self::$USER = $reflection->getConstant('USER');
-        self::$REDIRECT = $reflection->getConstant('REDIRECT');
+        self::$USER = $reflection->getConstant("USER");
+        self::$REDIRECT = $reflection->getConstant("REDIRECT");
     }
 
     private function getManager(...$args): Manager
@@ -37,29 +37,31 @@ class ManagerTest extends TestCase
 
     public function testConstructorCustomLoginPath()
     {
-        $login = 'custom-login-path';
+        $login = "custom-login-path";
         $manager = $this->getManager($login);
-        $response = $manager->startUserLogin($this->createRequest('GET', '/'));
+        $response = $manager->startUserLogin($this->createRequest("GET", "/"));
         $this->assertLocationHeader($login, $response);
     }
 
     public function testConstructorCustomDefaultRedirect()
     {
-        $redirect = 'custom-default-redirect';
-        $manager = $this->getManager('', $redirect);
+        $redirect = "custom-default-redirect";
+        $manager = $this->getManager("", $redirect);
         $response = $manager->startUserSession(new User());
         $this->assertLocationHeader($redirect, $response);
 
-        $response = $manager->startUserLogin($this->createRequest('GET', $manager::DEFAULT_LOGIN_PATH));
+        $response = $manager->startUserLogin(
+            $this->createRequest("GET", $manager::DEFAULT_LOGIN_PATH)
+        );
         $this->assertLocationHeader($redirect, $response);
     }
 
     public function testStartUserLogin()
     {
-        $path = 'requested-path';
+        $path = "requested-path";
         $session = $this->getSession();
         $manager = $this->getManager();
-        $request = $this->createRequest('GET', $path);
+        $request = $this->createRequest("GET", $path);
         $response = $manager->startUserLogin($request);
         $this->assertLocationHeader(Manager::DEFAULT_LOGIN_PATH, $response);
         $this->assertEquals(302, $response->getStatusCode());
@@ -72,7 +74,7 @@ class ManagerTest extends TestCase
         $session = $this->getSession();
         $manager = $this->getManager();
         $user = new User();
-        $request = $this->createRequest('GET', $manager::DEFAULT_LOGIN_PATH);
+        $request = $this->createRequest("GET", $manager::DEFAULT_LOGIN_PATH);
         $session->set(self::$USER, $user);
         $this->assertTrue($manager->sessionIsActive());
         $this->assertEquals($user, $manager->getCurrentUser());
