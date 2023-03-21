@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="tests/bootstrap.php" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
-  <coverage processUncoveredFiles="true">
-    <include>
-      <directory suffix=".php">src</directory>
-    </include>
-  </coverage>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="vendor/autoload.php" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd" cacheDirectory=".cache/phpunit" displayDetailsOnTestsThatTriggerWarnings="true" displayDetailsOnTestsThatTriggerNotices="true">
   <testsuites>
-    <testsuite name="Battis\UserSession">
+    <testsuite name="Battis\DataUtilities">
       <directory>tests</directory>
     </testsuite>
   </testsuites>
-  <extensions>
-    <extension class="Battis\PHPUnit\Sessions\Extension" />
-  </extensions>
+  <coverage includeUncoveredFiles="true">
+    <include>
+      <directory suffix=".php">src</directory>
+    </include>
+    <report>
+        <clover outputFile="coverage/clover.xml" />
+    </report>
+  </coverage>
 </phpunit>

@@ -24,8 +24,7 @@
         "battis/phpunit-sessions": "^0.1",
         "ext-simplexml": "*",
         "php-di/php-di": "^6.4",
-        "phpspec/prophecy-phpunit": "^2.0",
-        "phpunit/phpunit": "^9.0"
+        "phpspec/prophecy-phpunit": "^2.0"
     },
     "autoload-dev": {
         "psr-4": {
@@ -34,5 +33,9 @@
     },
     "config": {
         "sort-packages": true
+    },
+    "scripts": {
+        "test": "XDEBUG_MODE=coverage ./tools/phpunit --coverage-text --coverage-html=coverage",
+        "docs": "./tools/phpdocumentor -d src -t docs"
     }
 }

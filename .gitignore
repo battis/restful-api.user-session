@@ -1,22 +1,6 @@
-# Dependencies
-/vendor/
-
-# PHP development
-/phpdoc/
+.DS_Store
+/.cache/
 /coverage/
-*.cache
-/db.sqlite
-/external/
-/.nova/*
-!/.nova/Artwork
-!/.nova/Configuration.json
-
-# Runtime
-/logs/*
-/var/*
-!README.md
-
-# Environment
-.env
-.env.*
-!.env.example
+/docs/
+/tools/
+/vendor/
