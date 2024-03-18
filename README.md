@@ -13,7 +13,7 @@ composer install battis/user-session
 
 ## Use
 
-See [example](example) for sample implementation. The highlights are:
+See [example](https://github.com/battis/restful-api/tree/main/examples/user-session) for sample implementation. The highlights are:
 
 ### Add `UserSession\Dependencies` definitions
 
@@ -88,7 +88,7 @@ Add a user session that provides access to the currently logged-in user to an en
 ```php
 /** @var Slim\App $app */
 $app
-  ->get("/home", Example\PageRenderer::class)
+  ->get('/home', Example\PageRenderer::class)
   ->add(Battis\UserSession\Middleware\Session::class);
 ```
 
@@ -97,6 +97,6 @@ Restrict access to an endpoint (or group) to authenticated users by adding the `
 ```php
 /** @var Slim\App $app */
 $app
-  ->get("/protected", Example\PageRenderer::class)
+  ->get('/protected', Example\PageRenderer::class)
   ->add(Battis\UserSession\Middleware\RequireAuthentication::class);
 ```
