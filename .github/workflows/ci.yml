@@ -1,0 +1,23 @@
+name: CI
+on: [push]
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    environment: actions
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/checkout@v3
+      - uses: php-actions/composer@v6
+      - uses: php-actions/phpunit@v3
+        env:
+          XDEBUG_MODE: coverage
+        with:
+          bootstrap: vendor/autoload.php
+          configuration: phpunit.xml
+          php_extensions: xdebug
+          coverage_clover: coverage.xml
+      - if: success() || failure()
+        uses: codecov/codecov-action@v4
+        with:
+          files: coverage.xml
+          token: ${{ secrets.CODECOV_TOKEN }}
